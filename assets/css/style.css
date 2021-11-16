@@ -1,0 +1,19 @@
+.form-control-sm {
+    border-radius: 0;
+    max-width: 60px;
+}
+.lni {
+    font-weight: 600;
+}
+.lni-checkmark {
+    color: #0dcaf0;
+}
+.lni-warning {
+    color: #0dcaf0;
+}
+.toast-container {
+    top: 90px;
+    right: 9px;
+    position: fixed;
+    z-index: 1060;
+}

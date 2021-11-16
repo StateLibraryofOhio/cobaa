@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <meta content="width=device-width, minimum-scale=1.0" name="viewport"/>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  {% load static %} {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
+  <link href="{% static 'img/favicon.ico' %}" rel="icon" type="image/x-icon"/>
+  <link href="https://cdn.lineicons.com/3.0/lineicons.css" rel="stylesheet">
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+  <title>COBAA</title>
+  {% block head %}{% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-expand navbar-dark bg-dark">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a aria-current="page" class="nav-link active" href="{% url 'books:book_list' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a aria-current="page" class="nav-link" href="#" onclick="savedListModal.show()">Retrieve a List</a>
+        </li>
+        <li>
+          <a aria-current="page" class="nav-link" href="https://library.ohio.gov/services-for-libraries/lsta-grants/cobaa-grant/" target="_blank">About
+            COBAA</a>
+        </li>
+      </ul>
+      <p class="mt-3 d-flex" hx-get="{% url "cart:cart_total" %}" hx-trigger="updateTotal from:body">
+        {% include 'total.html' %}
+      </p>
+    </div>
+  </div>
+</nav>
+
+{% include 'toast.html' %}
+
+<div class="container-fluid px-4">
+
+  <div class="row mx-auto mt-3 mb-4">
+    <div class="col">&nbsp;</div>
+    <div class="col gy-5">
+      <h1 class="text-center">
+        {% block title %}COBAA Titles{% endblock %}
+      </h1>
+    </div>
+    <div class="col text-end">
+      <img src="{% static "img/StateLibraryLogo.png" %}" class="img img-responsive" style="max-height:75px;" alt="State Library of Ohio">
+      <img src="{% static "img/IMLSLogo.jpg" %}" class="img img-responsive" style="max-height:75px;" alt="IMLS">
+    </div>
+  </div>
+
+  {% block content %} {% endblock %}
+
+</div>
+<div id="savedListModal" class="modal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Retrieve existing list</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Please enter the unique code at the bottom of your PDF</p>
+        <form id="OrderRetrieveForm" class="form-group" action="{% url "cart:cart_retrieve" %}" method="post">
+          <div class="mb-3">
+            <label for="id_order_id" class="form-label">Code</label>
+            {{ saved_list.order_id }}
+          </div>
+          {% csrf_token %}
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" form="OrderRetrieveForm" class="btn btn-primary" onclick="savedListModal.hide()">Retrieve
+          List
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+<script>
+    let savedListModal = new bootstrap.Modal(document.getElementById('savedListModal'), {
+        keyboard: false
+    })
+    let savedListInput = document.getElementById('id_order_id')
+    savedListModal._element.addEventListener('shown.bs.modal', function () {
+        savedListInput.focus()
+    })
+</script>
+<script>
+    function showToasts () {
+        let options = {
+            'animation': true,
+            'autohide': true,
+            'delay': 2100,
+        }
+        let toastElList = [].slice.call(document.querySelectorAll('.toast'))
+        let toastList = toastElList.map(function (toastEl) {
+            return new bootstrap.Toast(toastEl, options)
+        })
+        toastList.forEach(toast => toast.show());
+
+    }
+    showToasts();
+</script>
+ <script src="https://unpkg.com/htmx.org@1.5.0"></script>
+<script>
+    document.body.addEventListener('htmx:configRequest', (event) => {
+        event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+
+        htmx.onLoad(function (target) {
+            showToasts();
+        });
+    })
+</script>
+</html>

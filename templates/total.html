@@ -1,0 +1,9 @@
+{% with total_items=cart|length %}
+  {% if total_items > 0 %}
+    <a href="{% url "cart:cart_detail" %}" class="btn btn-dark"><i class="lni lni-list"></i>&nbsp;My
+      List: {{ total_items }}
+      item{{ total_items|pluralize }}</a>
+  {% else %}
+    <button class="btn btn-dark disabled"><i class="lni lni-list"></i>&nbsp;My List: 0 items</button>
+  {% endif %}
+{% endwith %}

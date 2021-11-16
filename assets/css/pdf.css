@@ -1,0 +1,87 @@
+@page {
+    size: letter portrait;
+    margin-top: 5mm;
+    margin-left: 15mm;
+    margin-right: 15mm;
+    margin-bottom: 10mm;
+}
+
+html, body {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-family: Helvetica, sans-serif;
+    color: #222;
+}
+
+table {
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+table th, table td {
+    text-align: left;
+    font-size: 10px;
+    padding-top: 5px;
+    padding-left: 4px;
+    padding-right: 4px;
+    margin: 0;
+}
+
+tr {
+    vertical-align: center;
+}
+
+thead th, tbody tr.total {
+    background-color: #212529;
+    color: #fff;
+    font-weight: bold;
+}
+
+.author {
+    font-size: 8px;
+}
+
+.inst_name {
+    font-size: 16px;
+}
+
+.logoslo {
+    height: 100px;
+    width: 100px;
+    margin-top: -20px;
+    margin-left: 5px;
+}
+
+.logoimls {
+    width: 150px;
+    margin-top: -20px;
+    margin-right: 5px;
+}
+
+.date {
+    font-family: monospace;
+    font-weight: 400;
+    font-size: 10px;
+    margin: 0;
+    color: #555555;
+    text-align: left;
+}
+
+.quantity {
+    text-align: right;
+}
+
+.uuid {
+    font-family: monospace;
+    font-weight: 400;
+    font-size: 10px;
+    margin: 0;
+    color: #555555;
+    text-align: right;
+}

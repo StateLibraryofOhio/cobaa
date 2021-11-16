@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}  {% load bootstrap5 %}
+
+{% block content %}
+
+  <div class="row">
+    <div class="col-12">
+      <form role="form" class="form" method="get">
+        <div class="row">
+          <div class="col">
+            {% bootstrap_field books.form.awards__award field_group_class="" %}
+            {% bootstrap_field books.form.keywords value="" placeholder="Ex: Berenstain" %}
+            <div class="form-check form-switch">
+              {% if request.GET.winner == 'true' %}
+                <input class="form-check-input" type="checkbox" name="winner" id="id_winner" value="true" checked>
+              {% else %}
+                <input class="form-check-input" type="checkbox" name="winner" id="id_winner" value="true">
+              {% endif %}
+              <label class="form-check-label" for="winner">Winners only</label>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-1">
+          {% buttons submit='Search' %}{% endbuttons %}
+        </div>
+      </form>
+    </div>
+  </div>
+
+  {% include 'paginator.html' %}
+
+  <table class="table table-hover align-middle" style="font-size:0.88rem;">
+    <thead>
+    <tr>
+      <th>Title</th>
+      <th>Authors / Illustrators</th>
+      <th>Awards</th>
+      <th class="text-end">Quantity</th>
+    </tr>
+    </thead>
+    {% for book in book_list %}
+      <tr>
+        <td>
+          <strong>{{ book.title|truncatechars:60 }}</strong><br>
+            <span class="small">
+              {{ book.tags.all|join:'<span style="color:#424242"> &bull; </span>' }}
+            </span>
+        </td>
+        <td>{{ book.authors.all|join:'<br />' }}</td>
+        <td>{{ book.awards.published|join:'<br>' }}</td>
+        <td>
+          <div class="input-group input-group-sm justify-content-end">
+            <form class="cart_form" hx-post="{% url "cart:cart_add" book.id %}" hx-target="#toast">
+              {% for field in cart_form %}
+                {{ field }}
+              {% endfor %}
+              {% csrf_token %}
+              <input type="submit" class="btn btn-sm btn-info" value="Add +">
+            </form>
+          </div>
+        </td>
+      </tr>
+    {% empty %}
+      <p>No results found.</p>
+    {% endfor %}
+  </table>
+
+  {% include 'paginator.html' %}
+
+{% endblock content %}

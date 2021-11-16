@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}  {% load bootstrap5 %}
+
+{% block title %}My Selected Titles{% endblock %}
+
+{% block content %}
+
+  {% include 'toolbar.html' %}
+
+  <table class="table table-hover align-middle" style="font-size:0.88rem;">
+    <colgroup>
+      <col width="40%">
+      <col width="40%">
+      <col width="20%">
+    </colgroup>
+    <thead>
+    <tr>
+      <th>Title</th>
+      <th>Author / Illustrators</th>
+      <th>Quantity</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in cart %}
+      {% with book=item.book %}
+        <tr>
+          <td>{{ book.title }}</td>
+          <td>{{ book.authors.all|join:" &amp; " }}</td>
+          <td>
+            <form class="row row-cols-lg-auto g-3 align-items-center" hx-post="{% url "cart:cart_update" book.id %}" hx-target="#toast">
+              {{ item.update_quantity_form.quantity }}
+              {{ item.update_quantity_form.override }}
+              <input type="submit" value="Update" class="btn btn-sm btn-outline-secondary mx-2">
+            <button class="btn btn-sm btn-danger"
+                    hx-post="{% url "cart:cart_remove" book.id %}"
+                    hx-confirm="Remove this title?"
+                    hx-target="closest tr"
+                    hx-swap="outerHTML swap:0.4s">
+              <i class="lni lni-trash-can"></i>&nbsp;Remove
+            </button>
+              {% csrf_token %}
+            </form>
+          </td>
+        </tr>
+      {% endwith %}
+    {% endfor %}
+    </tbody>
+  </table>
+
+  {% include 'toolbar.html' %}
+
+  <div id="myModal" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Almost there!</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Please enter the following information for the PDF</p>
+          <form id="orderForm" class="form-group" action="{% url "pdf:books_to_pdf" %}" target="_blank" method="post">
+            <div class="mb-3">
+              <label for="id_inst_name" class="form-label">Institution Name</label>
+              {{ order.inst_name }}
+            </div>
+            <label>Total Amount</label>
+            <div class="input-group">
+              <div class="input-group-text">$</div>
+              {{ order.amount_requested }}
+            </div>
+            <div id="orderHelp" class="form-text">Should reflect the total costs of your selections.</div>
+            {% csrf_token %}
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" form="orderForm" class="btn btn-primary">Generate PDF</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+      let myModal = new bootstrap.Modal(document.getElementById('myModal'), {
+          keyboard: false
+      })
+      let myInput = document.getElementById('id_inst_name')
+      myModal._element.addEventListener(
+          'shown.bs.modal', function () {
+              myInput.focus()
+          })
+      let myForm = document.getElementById('orderForm')
+      myForm.addEventListener('submit', function () {
+          myModal.hide()
+      })
+  </script>
+
+{% endblock content %}

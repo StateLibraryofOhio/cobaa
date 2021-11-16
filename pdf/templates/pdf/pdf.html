@@ -1,0 +1,72 @@
+{% load static %}
+{% load to_absolute %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>COBAA &mdash; Selected Titles</title>
+  <link href="{{ "/css/pdf.css"|to_absolute }}" rel="stylesheet">
+</head>
+<body>
+<table>
+  <colgroup>
+    <col width="50%">
+    <col width="50%">
+  </colgroup>
+  <tr>
+    <td style="text-align:left">
+      <img src="{{ "/img/IMLSLogo.jpg"|to_absolute }}" alt="IMLS" class="logoimls">
+    </td>
+    <td style="text-align:right">
+      <img src="{{ "/img/StateLibraryLogo.png"|to_absolute }}" alt="State Library of Ohio" class="logoslo">
+    </td>
+  </tr>
+</table>
+<p class="inst_name"><span style="font-size: 20px">COBAA Request List</span> &mdash; {{ order.inst_name }}</p>
+<hr>
+<table class=" table table-hover align-middle" style="font-size:0.88rem;">
+  <colgroup>
+    <col width="50%">
+    <col width="45%">
+    <col width="5%">
+  </colgroup>
+  <thead>
+  <tr>
+    <th>Title</th>
+    <th>Awards</th>
+    <th class="quantity">Quantity</th>
+  </tr>
+  </thead>
+  {% for item in cart %}
+    {% with book=item.book %}
+      <tr style="{% cycle '' 'background-color:#efefef;' %}">
+        <td>{{ book.title }}<br>
+          <span class="author">{{ book.authors.all|join:" & " }}</span></td>
+        <td>{{ book.awards.all|join:"<br>" }}</td>
+        <td class="quantity">{{ item.quantity }}</td>
+      </tr>
+    {% endwith %}
+  {% endfor %}
+  {% with total_items=cart|length %}
+    <tr class="total">
+    <td>Total Item{{ total_items|pluralize }}<br>Total Amount Requested</td>
+    <td>&nbsp;</td>
+    <td class="quantity">{{ total_items }}<br>${{ order.amount_requested }}</td>
+  {% endwith %}
+</table>
+<table>
+  <colgroup>
+    <col width="50%">
+    <col width="50%">
+  </colgroup>
+  <tr>
+    <td style="text-align:left">
+      <p class="date">{% now "SHORT_DATE_FORMAT" %}</p>
+    </td>
+    <td style="text-align:right">
+      <p class="uuid">Your code: {{ order.id }}</p>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
