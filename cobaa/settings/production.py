@@ -4,7 +4,8 @@ DEBUG = False
 
 ADMINS = [('David W. Green', 'dgreen@library.ohio.gov',)]
 
-ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else ['*']
+ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME'], 'cobaa.library.ohio.gov'] \
+    if 'WEBSITE_HOSTNAME' in os.environ else ['cobaa.library.ohio.gov']
 
 DATABASES = {
     'default': {
