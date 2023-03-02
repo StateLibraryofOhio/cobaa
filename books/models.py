@@ -76,6 +76,7 @@ class Award(models.Model):
                                  ('j', 'James Cook'),
                                  ('n', 'Norman A. Sugarman'),
                                  ('o', 'Ohioana'),
+                                 ('s', 'Scott O\'Dell'),
                                  ('t', 'Thurber Prize')
                                  ])
     year = models.SmallIntegerField(validators=[MinValueValidator(1900, message="Invalid date"),
