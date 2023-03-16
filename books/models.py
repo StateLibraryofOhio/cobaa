@@ -69,6 +69,7 @@ class Award(models.Model):
     award = models.CharField(max_length=75,
                              choices=[
                                  ('a', 'Ansfield-Wolf'),
+                                 ('p', 'Arnold Adoff'),
                                  ('b', 'Buckeye Children\'s & Teen'),
                                  ('c', 'Choose to Read Ohio'),
                                  ('d', 'Dayton Literary Peace Prize'),
