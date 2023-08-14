@@ -4,10 +4,9 @@ DEBUG = False
 
 ADMINS = [('David W. Green', 'dgreen@library.ohio.gov',)]
 
-ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else ['cobaa.library.ohio.gov']
+ALLOWED_HOSTS = ['cobaa.library.ohio.gov', '127.0.0.1', 'localhost']
 
-CSRF_TRUSTED_ORIGINS = ['https://' + os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else [
-    'https://cobaa.library.ohio.gov']
+CSRF_TRUSTED_ORIGINS = ['https://cobaa.library.ohio.gov', 'http://127.0.0.1', 'http://localhost']
 
 DATABASES = {
     'default': {
@@ -17,5 +16,5 @@ DATABASES = {
         'PASSWORD': os.environ['DB_PASS'],
         'HOST': os.environ['DB_HOST'],
         'PORT': '',
-    },
-}
+        },
+    }
