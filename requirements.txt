@@ -11,7 +11,7 @@ psycopg2-binary==2.9.7
 PyPDF2==3.0.1
 python-bidi==0.4.2
 pytz==2023.3.post1
-reportlab==3.6.13
+reportlab==4.0.5
 six==1.16.0
 soupsieve==2.5
 sqlparse==0.4.4
