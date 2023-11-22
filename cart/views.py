@@ -1,15 +1,30 @@
 import csv
+from urllib.parse import urlparse
 
 from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
+from django.http import HttpResponseBadRequest
+
 from books.models import Book
 from orders.forms import OrderCreateForm
 from orders.models import Order
 from .cart import Cart
 from .forms import CartAddBookForm
+
+
+def is_same_host(url, request):
+    # Extract the host from the URL
+    parsed_url = urlparse(url)
+    redirect_host = parsed_url.netloc
+
+    # Extract the host from the current request
+    current_host = request.get_host()
+
+    # Compare the hosts
+    return redirect_host == current_host
 
 
 @require_POST
@@ -31,6 +46,10 @@ def cart_add(request, book_id):
 
     # Hack to keep book query filter query params intact after POST
     previous_url = request.META.get('HTTP_REFERER', 'books:book_list')
+
+    # Check if the previous URL is from the same host
+    if not is_same_host(previous_url, request):
+        return HttpResponseBadRequest("Invalid redirect URL")
 
     return redirect(previous_url)
 
