@@ -12,15 +12,6 @@ class BookFilter(FilterSet):
         vector = SearchVector('title', 'authors__name', 'tags__tag', config="english")
         return queryset.annotate(search=vector).filter(search=query).distinct('title')
 
-    # @staticmethod
-    # def filter_by_keyword(queryset, name, value):
-    #     keyword_filter = Q()
-    #     for keyword in value.split():
-    #         keyword_filter |= Q(title__icontains=keyword) | \
-    #                           Q(authors__name__icontains=keyword) | \
-    #                           Q(tags__tag__icontains=keyword)
-    #         return queryset.filter(keyword_filter).distinct()
-
     @staticmethod
     def filter_winners_only(queryset, name, value):
         return queryset.filter(awards__prize="w")
