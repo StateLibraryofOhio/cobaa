@@ -30,6 +30,15 @@ class BookFilter(FilterSet):
     keywords = CharFilter(method='filter_by_keyword', label='Title, Author, or Keywords')
     winner = BooleanFilter(field_name='prize', method='filter_winners_only', label='Winner')
 
+    def filter_queryset(self, queryset):
+        queryset = super().filter_queryset(queryset)
+
+        if self.form.cleaned_data.get('awards__award') and self.form.cleaned_data.get('award_year'):
+            queryset = queryset.filter(awards__award=self.form.cleaned_data.get('awards__award'),
+                                       awards__year=self.form.cleaned_data.get('award_year'))
+
+        return queryset
+
     class Meta:
         model = Book
         fields = ['awards__award', 'keywords', 'winner', 'award_year']
