@@ -18,7 +18,7 @@ The Celebrating Ohio Book Awards & Authors (COBAA) grant is an opportunity for O
 * Thurber Prize for American Humor
 
 
-For more information about the grant, [visit this page](https://library.ohio.gov/services-for-libraries/lsta-grants/cobaa-grant/) on the State Library of Ohio website.
+For more information about the grant, [visit this page](https://library.ohio.gov/libraries/grants/cobaa/cobaa-grant) on the State Library of Ohio website.
 
 
 # Tools Used
