@@ -24,7 +24,7 @@ pyhanko-certvalidator==0.23.0
 pypng==0.20220715.0
 python-bidi==0.4.2
 pytz==2023.3.post1
-reportlab
+reportlab==3.6.12
 requests==2.31.0
 six==1.16.0
 soupsieve==2.5
@@ -36,4 +36,4 @@ uritools==4.0.1
 urllib3==2.1.0
 webencodings==0.5.1
 whitenoise==6.6.0
-xhtml2pdf
+xhtml2pdf==0.2.10
