@@ -1,3 +1,9 @@
+# Install libxml2 and libxslt dependencies
+--global-option=build_ext
+--global-option=--without-libxslt
+--global-option=--without-libxml2
+--install-option=--prefix=/home/site/wwwroot/antenv
+
 arabic-reshaper==3.0.0
 asgiref==3.7.2
 asn1crypto==1.5.1
