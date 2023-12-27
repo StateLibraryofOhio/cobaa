@@ -8,7 +8,7 @@ future==0.18.3
 html5lib==1.1
 Pillow==10.1.0
 psycopg2-binary==2.9.9
-pypdf==3.17.1
+pypdf==3.17.2
 python-bidi==0.4.2
 pytz==2023.3.post1
 reportlab==4.0.8
