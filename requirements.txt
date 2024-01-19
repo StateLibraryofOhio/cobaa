@@ -26,7 +26,6 @@ pypng==0.20220715.0
 python-bidi==0.4.2
 pytz==2023.3.post1
 requests==2.31.0
-reportlab==3.6.13
 six==1.16.0
 soupsieve==2.5
 sqlparse==0.4.4
