@@ -1,23 +1,22 @@
 {% extends 'base.html' %}
-{% load static %}  {% load bootstrap5 %}
+{% load static %}  {% load django_bootstrap5 %}
 
 {% block content %}
-
     <div class="row">
         <div class="col-12">
             <form role="form" class="form" method="get">
                 <div class="row">
                     <div class="col-md-6">
-                        {% bootstrap_field books.form.awards__award field_group_class="" %}
+                        {% bootstrap_field books.form.awards__award bound_css_class="" %}
                     </div>
                     <div class="col-md-6">
-                        {% bootstrap_field books.form.award_year field_group_class="" %}
+                        {% bootstrap_field books.form.award_year bound_css_class="" %}
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col">
-                        {% bootstrap_field books.form.keywords value="" placeholder="Ex: Berenstain" %}
+                        {% bootstrap_field books.form.keywords value="" placeholder="Ex: Berenstain" bound_css_class=""%}
                         <div class="form-check form-switch">
                             {% if request.GET.winner == 'true' %}
                                 <input class="form-check-input" type="checkbox" name="winner" id="id_winner"
@@ -32,7 +31,9 @@
                 </div>
 
                 <div class="row mt-1">
-                    {% buttons submit='Search' %}{% endbuttons %}
+                    <div class="mb-3">
+                        {% bootstrap_button content='Search' button_type="submit" size="md"%}
+                </div>
                 </div>
             </form>
         </div>

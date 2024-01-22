@@ -21,13 +21,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.postgres',
     'django.contrib.staticfiles',
-    'bootstrap5',
+    'django_bootstrap5',
     'django_filters',
     'cart.apps.CartConfig',
     'books.apps.BooksConfig',
     'pdf.apps.PdfConfig',
     'orders.apps.OrdersConfig',
-    ]
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -55,10 +55,10 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'cart.context_processors.cart',
                 'cart.context_processors.saved_list',
-                ],
-            },
+            ],
         },
-    ]
+    },
+]
 
 WSGI_APPLICATION = 'cobaa.wsgi.application'
 
@@ -68,17 +68,17 @@ WSGI_APPLICATION = 'cobaa.wsgi.application'
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-        },
+    },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-        },
+    },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-        },
+    },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-        },
-    ]
+    },
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -107,15 +107,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Bootstrap 5 Settings
 BOOTSTRAP5 = {
+    'server_side_validation': False,
     'success_css_class': ''
-    }
+}
 
 # Cart Settings
 CART_SESSION_ID = 'cart'
 
 # Cookie Settings
 SESSION_COOKIE_AGE = 15780000
-# SESSION_COOKIE_DOMAIN = ''
 
 # Django-Filter Settings
 FILTERS_EMPTY_CHOICE_LABEL = 'All Books'
