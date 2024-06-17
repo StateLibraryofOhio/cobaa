@@ -34,7 +34,7 @@ svglib==1.5.1
 tinycss2==1.2.1
 tzlocal==5.0.1
 uritools==4.0.1
-urllib3==2.1.0
+urllib3==2.2.2
 webencodings==0.5.1
 whitenoise==6.6.0
 xhtml2pdf==0.2.14
