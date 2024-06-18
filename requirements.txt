@@ -25,7 +25,7 @@ pypdf==4.2.0
 pypng==0.20220715.0
 python-bidi==0.4.2
 pytz==2023.3.post1
-reportlab==4.2.0
+reportlab==4.0.9
 requests==2.32.0
 six==1.16.0
 soupsieve==2.5
@@ -33,8 +33,8 @@ sqlparse==0.5.0
 svglib==1.5.1
 tinycss2==1.2.1
 tzlocal==5.0.1
-uritools==4.0.2
-urllib3==2.1.0
+uritools==4.0.3
+urllib3==2.2.2
 webencodings==0.5.1
 whitenoise==6.6.0
-xhtml2pdf==0.2.14
+xhtml2pdf==0.2.15
