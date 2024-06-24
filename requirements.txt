@@ -32,7 +32,7 @@ soupsieve==2.5
 sqlparse==0.5.0
 svglib==1.5.1
 tinycss2==1.2.1
-tzlocal==5.0.1
+tzlocal==5.2
 uritools==4.0.3
 urllib3==2.2.2
 webencodings==0.5.1
