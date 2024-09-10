@@ -61,4 +61,5 @@ jobs:
         id: deploy-to-webapp
         with:
           app-name: 'lib-prod-cobaa-as'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B4AEB796096140BE98E1CAF2BDAF4028 }}
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B2E2E393BCDF4DD1A4D0576575876372 }}
