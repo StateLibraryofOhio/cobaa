@@ -51,6 +51,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: python-app
+          path: .
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
@@ -60,5 +61,4 @@ jobs:
         id: deploy-to-webapp
         with:
           app-name: 'lib-test-cobaa-as'
-          slot-name: 'Test'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B4AEB796096140BE98E1CAF2BDAF4028 }}
