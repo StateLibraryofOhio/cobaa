@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <meta content="width=device-width, minimum-scale=1.0" name="viewport"/>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  {% load static %} {% load django_bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
+  <link href="{% static 'img/favicon.ico' %}" rel="icon" type="image/x-icon"/>
+  <link href="https://cdn.lineicons.com/3.0/lineicons.css" rel="stylesheet">
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+  <title>COBAA</title>
+  {% block head %}{% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-expand navbar-dark bg-dark">
+  <div class="container-xxl">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a aria-current="page" class="nav-link disabled" href="{% url 'books:book_list' %}" disabled="disabled">Home</a>
+        </li>
+        <li class="nav-item">
+          <a aria-current="page" class="nav-link disabled" href="#" onclick="savedListModal.show()" disabled="disabled">Retrieve a List</a>
+        </li>
+        <li>
+          <a aria-current="page" class="nav-link disabled" href="https://library.ohio.gov/libraries/grants/cobaa/" target="_blank">About
+            COBAA</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<div class="container-xxl px-4">
+
+  <div class="row mx-auto mt-3 mb-4">
+    <div class="col">&nbsp;</div>
+        <p>Our database is currently undergoing scheduled maintenance. Please try again later.</p>
+    <div class="col text-end">
+      <img src="{% static "img/StateLibraryLogo.png" %}" class="img img-responsive" style="max-height:75px;" alt="State Library of Ohio">
+      <img src="{% static "img/IMLSLogo.jpg" %}" class="img img-responsive" style="max-height:75px;" alt="IMLS">
+    </div>
+  </div>
+
+  {% block content %} {% endblock %}
+
+</div>
+</body>
+</html>
