@@ -76,7 +76,7 @@ class Award(models.Model):
                                  ('f', 'Floyd\'s Pick'),
                                  ('j', 'James Cook'),
                                  ('n', 'Norman A. Sugarman'),
-                                 ('o', 'Ohioana'),
+                                 ('o', 'Ohio Book Award'),
                                  ('s', 'Scott O\'Dell'),
                                  ('t', 'Thurber Prize')
                                  ])
