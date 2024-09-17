@@ -22,5 +22,8 @@ DATABASES = {
         'PASSWORD': os.environ['DB_PASS'],
         'HOST': os.environ['DB_HOST'],
         'PORT': '',
+        'OPTIONS': {
+            'connect_timeout': 5,
+        }
     },
 }
