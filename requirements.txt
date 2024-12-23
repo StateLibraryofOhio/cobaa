@@ -23,7 +23,7 @@ pyhanko-certvalidator==0.26.3
 pyHanko==0.25.0
 pypdf==4.3.1
 pypng==0.20220715.0
-python-bidi==0.6.0
+python-bidi==0.6.3
 pytz==2023.3.post1
 reportlab==4.2.2
 requests==2.32.3
