@@ -5,9 +5,9 @@ beautifulsoup4==4.12.3
 certifi==2024.8.30
 cffi==1.17.1
 chardet==5.2.0
-charset-normalizer==3.3.2
-click==8.1.7
-cryptography==43.0.1
+charset-normalizer==3.4.1
+click==8.1.8
+cryptography==44.0.1
 cssselect2==0.7.0
 django-bootstrap5==24.2
 django-filter==24.2
@@ -21,10 +21,10 @@ psycopg2-binary==2.9.10
 pycparser==2.22
 pyhanko-certvalidator==0.26.3
 pyHanko==0.25.0
-pypdf==5.1.0
+pypdf==5.3.0
 pypng==0.20220715.0
 python-bidi==0.6.3
-pytz==2023.3.post1
+pytz==2025.1
 reportlab==4.2.2
 requests==2.32.3
 six==1.17.0
@@ -36,5 +36,5 @@ tzlocal==5.2
 uritools==4.0.3
 urllib3==2.2.2
 webencodings==0.5.1
-whitenoise==6.7.0
+whitenoise==6.9.0
 xhtml2pdf==0.2.16
