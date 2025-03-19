@@ -37,4 +37,4 @@ uritools==4.0.3
 urllib3==2.2.2
 webencodings==0.5.1
 whitenoise==6.9.0
-xhtml2pdf==0.2.16
+xhtml2pdf==0.2.17
