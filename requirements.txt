@@ -28,7 +28,7 @@ pycairo==1.25.1
 pycparser==2.22
 pyHanko==0.29.1
 pyhanko-certvalidator==0.27.0
-pypdf==5.7.0
+pypdf==6.0.0
 pypng==0.20220715.0
 python-bidi==0.6.6
 pytz==2025.2
