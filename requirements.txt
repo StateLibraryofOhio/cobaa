@@ -10,7 +10,7 @@ click==8.1.8
 cryptography==45.0.7
 cssselect2==0.8.0
 defusedxml==0.7.1
-Django==5.2.4
+Django==5.2.6
 django-bootstrap5==25.2
 django-filter==25.1
 fonttools==4.59.2
