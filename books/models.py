@@ -7,7 +7,7 @@ from django.urls import reverse
 
 
 class Tag(models.Model):
-    tag = models.CharField('Tags', max_length=35, unique=True)
+    tag = models.CharField('Tags', max_length=55, unique=True)
 
     class Meta:
         ordering = ['tag']
