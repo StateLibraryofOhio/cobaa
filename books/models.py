@@ -75,6 +75,7 @@ class Award(models.Model):
                                  ('d', 'Dayton Literary Peace Prize'),
                                  ('f', 'Floyd\'s Pick'),
                                  ('j', 'James Cook'),
+                                 ('m', 'Nancy Dasher Book Awards'),
                                  ('n', 'Norman A. Sugarman'),
                                  ('o', 'Ohio Book Award'),
                                  ('s', 'Scott O\'Dell'),
