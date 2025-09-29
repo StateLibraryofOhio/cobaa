@@ -1,29 +1,41 @@
 from .base import *
 
-DEBUG = False
+# Detect environment
+IS_AZURE = 'WEBSITE_HOSTNAME' in os.environ
+DEBUG = not IS_AZURE  # Debug on for local, off for Azure
 
-ADMINS = [('David W. Green', 'dgreen@library.ohio.gov',)]
-
-if 'WEBSITE_HOSTNAME' in os.environ:
+# Host configuration
+if IS_AZURE:
     ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME'], 'cobaa.library.ohio.gov']
+    CSRF_TRUSTED_ORIGINS = [
+        'https://' + os.environ['WEBSITE_HOSTNAME'],
+        'https://cobaa.library.ohio.gov'
+    ]
 else:
-    ALLOWED_HOSTS = ['cobaa.library.ohio.gov']
+    ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+    CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1', 'http://localhost']
 
-if 'WEBSITE_HOSTNAME' in os.environ:
-    CSRF_TRUSTED_ORIGINS = ['https://' + os.environ['WEBSITE_HOSTNAME'], 'https://cobaa.library.ohio.gov']
+# Database configuration
+if IS_AZURE:
+    db_name = '/mnt/database/db.sqlite3'
 else:
-    CSRF_TRUSTED_ORIGINS = ['https://cobaa.library.ohio.gov']
+    db_name = BASE_DIR / 'db.sqlite3'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ['DB_NAME'],
-        'USER': os.environ['DB_USER'],
-        'PASSWORD': os.environ['DB_PASS'],
-        'HOST': os.environ['DB_HOST'],
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': db_name,
         'OPTIONS': {
-            'connect_timeout': 5,
+            'timeout': 30,
+            'transaction_mode': 'IMMEDIATE',
+            'init_command': '''
+                PRAGMA journal_mode=WAL;
+                PRAGMA synchronous=NORMAL;
+                PRAGMA cache_size=-64000;
+                PRAGMA temp_store=MEMORY;
+                PRAGMA mmap_size=268435456;
+                PRAGMA optimize;
+            '''
         }
-    },
+    }
 }
