@@ -23,7 +23,7 @@ jobs:
       - name: Set up Python version
         uses: actions/setup-python@v6
         with:
-          python-version: '3.12'
+          python-version: '3.13'
 
       - name: Create and start virtual environment
         run: |
@@ -70,3 +70,4 @@ jobs:
           app-name: 'lib-prod-cobaa-as'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B2E2E393BCDF4DD1A4D0576575876372 }}
+
