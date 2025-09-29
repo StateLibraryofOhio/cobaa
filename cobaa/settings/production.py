@@ -1,18 +1,30 @@
 from .base import *
 
-DEBUG = False
+# Detect environment
+IS_AZURE = 'WEBSITE_HOSTNAME' in os.environ
+DEBUG = not IS_AZURE  # Debug on for local, off for Azure
 
-if 'WEBSITE_HOSTNAME' in os.environ:
+# Host configuration
+if IS_AZURE:
     ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME'], 'cobaa.library.ohio.gov']
-    CSRF_TRUSTED_ORIGINS = ['https://' + os.environ['WEBSITE_HOSTNAME'], 'https://cobaa.library.ohio.gov']
+    CSRF_TRUSTED_ORIGINS = [
+        'https://' + os.environ['WEBSITE_HOSTNAME'],
+        'https://cobaa.library.ohio.gov'
+    ]
 else:
-    ALLOWED_HOSTS = ['cobaa.library.ohio.gov']
-    CSRF_TRUSTED_ORIGINS = ['https://cobaa.library.ohio.gov']
+    ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+    CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1', 'http://localhost']
+
+# Database configuration
+if IS_AZURE:
+    db_name = '/mnt/database/db.sqlite3'
+else:
+    db_name = BASE_DIR / 'db.sqlite3'
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/mnt/database/db.sqlite3',
+        'NAME': db_name,
         'OPTIONS': {
             'timeout': 30,
             'transaction_mode': 'IMMEDIATE',
