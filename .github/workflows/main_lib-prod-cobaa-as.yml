@@ -70,3 +70,4 @@ jobs:
           app-name: 'lib-prod-cobaa-as'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B2E2E393BCDF4DD1A4D0576575876372 }}
+
