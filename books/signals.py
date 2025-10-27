@@ -59,7 +59,7 @@ def book_tags_changed(sender, instance, **kwargs):
 
 @receiver(post_save, sender=Author)
 def author_saved(sender, instance, **kwargs):
-    book_ids = instance.book_set.values_list('id', flat=True)
+    book_ids = instance.books.values_list('id', flat=True)
     for book_id in book_ids:
         update_book_search_index(book_id)
 
