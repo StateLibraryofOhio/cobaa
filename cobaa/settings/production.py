@@ -27,9 +27,8 @@ DATABASES = {
         'NAME': db_name,
         'OPTIONS': {
             'timeout': 30,
-            'transaction_mode': 'IMMEDIATE',
             'init_command': '''
-                PRAGMA journal_mode=WAL;
+                PRAGMA journal_mode=DELETE;
                 PRAGMA synchronous=NORMAL;
                 PRAGMA cache_size=-64000;
                 PRAGMA temp_store=MEMORY;
