@@ -9,11 +9,11 @@ from books.models import Award
 
 
 class Command(BaseCommand):
-    help = 'Export awards to an Excel file (awards_export.xlsx)'
+    help = 'Export awards to an Excel file (Complete Awards List.xlsx)'
 
     def handle(self, *args, **options):
         file_name = getattr(settings, 'BASE_DIR', os.getcwd())
-        file_path = os.path.join(file_name, 'awards_export.xlsx')
+        file_path = os.path.join(file_name, 'Complete Awards List.xlsx')
 
         wb = Workbook()
         ws = wb.active
@@ -65,13 +65,13 @@ class Command(BaseCommand):
         # Make headers filterable
         ws.auto_filter.ref = ws.dimensions
 
-        # Optional: auto-adjust column widths
+        # Auto-adjust column widths
         for column_cells in ws.columns:
             length = max((len(str(cell.value)) for cell in column_cells), default=0)
             col_letter = column_cells[0].column_letter
             ws.column_dimensions[col_letter].width = min(max(length + 2, 10), 60)
 
-        # Optional: freeze the header row
+        # Freeze the header row
         ws.freeze_panes = 'A2'
 
         wb.save(file_path)
