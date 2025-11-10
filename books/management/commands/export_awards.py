@@ -86,10 +86,11 @@ class Command(BaseCommand):
 
             upload_result = upload(
                 temp_file_path,
-                public_id="lsta/cobaa/Complete_Awards_List",
+                public_id="library.ohio.gov/lsta/cobaa/Complete_Awards_List",
                 resource_type="raw",
                 overwrite=True,
-                format="xlsx"
+                format="xlsx",
+                display_name="Complete Awards List",
             )
 
             # Use the secure_url directly from upload result
