@@ -7,14 +7,17 @@ Title selection application for the Celebrating Ohio Book Awards & Authors (COBA
 The Celebrating Ohio Book Awards & Authors (COBAA) grant is an opportunity for Ohio libraries to apply for federal LSTA grant funds to build or expand a collection of books receiving honors and awards in Ohio and by Ohio authors. This title selection application makes applying easier by providing a browsable and searchable interface of eligible titles for the following awards:
 
 
-* Ansfield-Wolf Book Award
+* Anisfield-Wolf Book Award
+* Arnold Adoff Poetry Awards
 * Buckeye Children's & Teen Book Awards
 * Choose to Read Ohio Award Booklists
 * Dayton Literary Peace Prize
 * Floyd's Pick Book Award
 * James Cook Book Award
+* Nancy Dasher Book Awards
 * Norman A. Sugarman Children’s Biography Award
-* Ohioana Book Awards
+* Ohio Book Awards
+* Scott O'Dell Award
 * Thurber Prize for American Humor
 
 
