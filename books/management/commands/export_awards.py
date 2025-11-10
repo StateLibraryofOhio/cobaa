@@ -44,7 +44,7 @@ class Command(BaseCommand):
                     default=Value(''),
                     output_field=CharField(),
                 )
-            ).order_by('award_display_name', 'year', 'book__title')
+            ).order_by('award_display_name', '-year', 'book__title')
 
             for award in qs:
                 book = award.book
