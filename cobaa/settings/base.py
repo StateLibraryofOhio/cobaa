@@ -22,6 +22,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'cloudinary_storage',
+    # 'cloudinary',
     'django_bootstrap5',
     'django_filters',
     'cart.apps.CartConfig',
@@ -95,6 +97,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = Path(BASE_DIR / 'static')
 STATICFILES_DIRS = [Path(BASE_DIR / 'assets')]
+
+# Default Cloudinary storage
+# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.RawMediaCloudinaryStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

@@ -15,6 +15,12 @@ else:
     ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
     CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1', 'http://localhost']
 
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ['CLOUDINARY_CLOUD_NAME'],
+    'API_KEY': os.environ['CLOUDINARY_API_KEY'],
+    'API_SECRET': os.environ['CLOUDINARY_API_SECRET'],
+}
+
 # Database configuration
 if IS_AZURE:
     db_name = '/mnt/database/db.sqlite3'
