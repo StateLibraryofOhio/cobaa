@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+<main id="main" role="main" aria-labelledby="about-heading">
+  <div class="container">
+    <h1 id="about-heading" class="page-title">About COBAA</h1>
+
+    <p>
+      The <em>Celebrating Ohio Book Awards &amp; Authors (COBAA)</em> grant is a federally funded initiative administered by
+      the State Library of Ohio. It supports Ohio libraries in developing their collections by providing up to
+      $2,000 to purchase books by Ohio authors and titles recognized by Ohio-based book award programs. Since
+      2016, COBAA has helped connect readers with local voices and award-winning literature, enriching communities
+      and promoting literacy across the state.
+    </p>
+
+    <p>
+      To learn more about the grant, eligibility, and how to apply, visit the
+      <a href="https://library.ohio.gov/libraries/grants/cobaa"
+         target="_blank"
+         rel="noopener noreferrer"
+         aria-label="State Library of Ohio COBAA page, opens in a new tab">
+        State Library of Ohio COBAA page</a>.
+    </p>
+
+    <section aria-labelledby="awards-heading">
+      <h2 id="awards-heading">Download awards list</h2>
+      <p>
+        You can also download the
+        <a href="https://dam.assets.ohio.gov/raw/upload/library.ohio.gov/lsta/cobaa/Complete_Awards_List.xlsx"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Download complete awards list as Excel, opens in a new tab">
+          complete list of awards (Excel)</a>. This spreadsheet is routinely updated.
+      </p>
+    </section>
+  </div>
+</main>
+{% endblock %}

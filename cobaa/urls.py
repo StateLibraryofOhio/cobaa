@@ -6,11 +6,12 @@ from django.views.generic.base import TemplateView
 
 urlpatterns = [
     path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
+    path("about/", TemplateView.as_view(template_name="about.html"), name="about"),
     path('admin/', admin.site.urls),
     path('cart/', include('cart.urls', namespace='cart')),
     path('pdf/', include('pdf.urls', namespace='pdf')),
     path('', include('books.urls', namespace='books')),
-    ]
+]
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
