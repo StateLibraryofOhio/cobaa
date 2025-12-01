@@ -19,7 +19,7 @@ django-bootstrap5==25.2
 django-cloudinary-storage==0.3.0
 django-filter==25.1
 et_xmlfile==2.0.0
-fonttools==4.60.1
+fonttools==4.61.0
 fpdf==1.7.2
 fpdf2==2.8.4
 freetype-py==2.5.1
