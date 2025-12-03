@@ -14,7 +14,7 @@ cloudinary==1.44.1
 cryptography==46.0.3
 cssselect2==0.8.0
 defusedxml==0.7.1
-Django==5.2.8
+Django==5.2.9
 django-bootstrap5==25.3
 django-cloudinary-storage==0.3.0
 django-filter==25.2
