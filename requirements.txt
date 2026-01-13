@@ -1,7 +1,7 @@
 arabic-reshaper==3.0.0
 asgiref==3.11.0
 asn1crypto==1.5.1
-azure-core==1.36.0
+azure-core==1.38.0
 azure-storage-file-share==12.23.1
 beautifulsoup4==4.14.3
 black==25.11.0
