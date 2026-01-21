@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Install Cairo dependencies
         run: sudo apt-get update && sudo apt-get install -y libcairo2-dev pkg-config
@@ -23,7 +23,7 @@ jobs:
       - name: Set up Python version
         uses: actions/setup-python@v6
         with:
-          python-version: '3.13'
+          python-version: '3.14'
 
       - name: Create and start virtual environment
         run: |
@@ -36,10 +36,10 @@ jobs:
           pip install -r requirements.txt
 
       - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+        run: zip -r release.zip . -x "venv/*" ".git/*" ".github/*" "__pycache__/*" "release.zip"
 
       - name: Upload artifact for deployment jobs
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: python-app
           path: |
@@ -55,7 +55,7 @@ jobs:
 
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v7
         with:
           name: python-app
           path: .
@@ -70,4 +70,3 @@ jobs:
           app-name: 'lib-prod-cobaa-as'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B2E2E393BCDF4DD1A4D0576575876372 }}
-
