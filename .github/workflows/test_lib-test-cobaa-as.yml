@@ -23,7 +23,7 @@ jobs:
       - name: Set up Python version
         uses: actions/setup-python@v6
         with:
-          python-version: '3.13'
+          python-version: '3.14'
 
       - name: Create and start virtual environment
         run: |
@@ -39,7 +39,7 @@ jobs:
         run: zip -r release.zip . -x "venv/*" ".git/*" ".github/*" "__pycache__/*" "release.zip"
 
       - name: Upload artifact for deployment jobs
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: python-app
           path: |
@@ -55,7 +55,7 @@ jobs:
 
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: python-app
           path: .
