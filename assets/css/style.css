@@ -11,6 +11,10 @@
 .lni-warning {
     color: #0dcaf0;
 }
+.modal-title{
+    font-size: 1.25rem;
+    margin-bottom: 0;
+}
 .toast-container {
     top: 90px;
     right: 9px;
