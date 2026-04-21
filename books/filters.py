@@ -17,7 +17,7 @@ class BookFilter(FilterSet):
         try:
             years = [(year, year) for year in Award.objects.values_list('year', flat=True).distinct().order_by('-year')]
             self.filters['award_year'].field.choices = [('', 'All Years')] + years
-        except:
+        except Exception:
             # If database doesn't exist yet, use empty choices
             self.filters['award_year'].field.choices = [('', 'All Years')]
 
