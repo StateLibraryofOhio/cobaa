@@ -11,7 +11,7 @@
     <colgroup>
       <col width="40%">
       <col width="40%">
-      <col width="20%">
+      <col width="30%">
     </colgroup>
     <thead>
     <tr>
@@ -27,17 +27,33 @@
           <td>{{ book.title }}</td>
           <td>{{ book.authors.all|join:" &amp; " }}</td>
           <td>
-            <form class="row row-cols-lg-auto g-3 align-items-center" hx-post="{% url "cart:cart_update" book.id %}" hx-target="#toast">
-              {{ item.update_quantity_form.quantity }}
-              {{ item.update_quantity_form.override }}
-              <input type="submit" value="Update" class="btn btn-sm btn-outline-secondary mx-2">
-            <button class="btn btn-sm btn-danger"
-                    hx-post="{% url "cart:cart_remove" book.id %}"
-                    hx-confirm="Remove this title?"
-                    hx-target="closest tr"
-                    hx-swap="outerHTML swap:0.4s">
-              <i class="lni lni-trash-can"></i>&nbsp;Remove
-            </button>
+            <form class="quantity-form row row-cols-lg-auto g-3 align-items-center" hx-post="{% url "cart:cart_update" book.id %}" hx-target="#toast">
+              <div class="quantity-stepper">
+                <label class="visually-hidden" for="id_quantity_update_{{ book.id }}">
+                  Quantity for {{ book.title|truncatechars:40 }}
+                </label>
+                <button type="button" class="btn btn-sm btn-outline-secondary quantity-btn quantity-decrease" aria-label="Decrease quantity for {{ book.title|truncatechars:40 }}">-</button>
+                <input type="number"
+                       class="form-control form-control-sm quantity-input"
+                       id="id_quantity_update_{{ book.id }}"
+                       name="quantity"
+                       min="1"
+                       max="99"
+                       value="{{ item.quantity }}"
+                       inputmode="numeric">
+                <button type="button" class="btn btn-sm btn-outline-secondary quantity-btn quantity-increase" aria-label="Increase quantity for {{ book.title|truncatechars:40 }}">+</button>
+              </div>
+              <input type="hidden" name="override" value="True">
+              <button type="submit" class="btn btn-sm btn-outline-secondary mx-2 cart-update-btn">
+                <span class="cart-update-label">Update</span>
+              </button>
+              <button class="btn btn-sm btn-danger"
+                      hx-post="{% url "cart:cart_remove" book.id %}"
+                      hx-confirm="Remove this title?"
+                      hx-target="closest tr"
+                      hx-swap="outerHTML swap:0.4s">
+                  <i class="lni lni-trash-can"></i><span class="visually-hidden">&nbsp;Remove</span>
+              </button>
               {% csrf_token %}
             </form>
           </td>
@@ -63,7 +79,7 @@
               <label for="id_inst_name" class="form-label">Institution Name</label>
               {{ order.inst_name }}
             </div>
-            <label>Total Amount</label>
+            <label for="id_amount_requested">Total Amount</label>
             <div class="input-group">
               <div class="input-group-text">$</div>
               {{ order.amount_requested }}
@@ -81,6 +97,58 @@
   </div>
 
   <script>
+      function bindCartDetailControls() {
+          document.querySelectorAll('.quantity-form').forEach((form) => {
+              if (form.dataset.bound === 'true') {
+                  return
+              }
+              form.dataset.bound = 'true'
+
+              const input = form.querySelector('.quantity-input')
+              const decreaseBtn = form.querySelector('.quantity-decrease')
+              const increaseBtn = form.querySelector('.quantity-increase')
+              const submitBtn = form.querySelector('.cart-update-btn')
+              const label = submitBtn.querySelector('.cart-update-label')
+
+              const adjust = (delta) => {
+                  const min = Number(input.min) || 1
+                  const max = Number(input.max) || 99
+                  const current = Number(input.value) || min
+                  const next = Math.min(max, Math.max(min, current + delta))
+                  input.value = next
+              }
+
+              decreaseBtn.addEventListener('click', () => adjust(-1))
+              increaseBtn.addEventListener('click', () => adjust(1))
+
+              form.addEventListener('htmx:beforeRequest', (event) => {
+                  if (event.detail.elt !== form) {
+                      return
+                  }
+                  submitBtn.disabled = true
+                  label.textContent = 'Updating...'
+              })
+
+              form.addEventListener('htmx:afterRequest', (event) => {
+                  if (event.detail.elt !== form) {
+                      return
+                  }
+                  submitBtn.disabled = false
+                  label.textContent = 'Updated'
+                  submitBtn.classList.remove('btn-outline-secondary')
+                  submitBtn.classList.add('btn-success')
+                  window.setTimeout(() => {
+                      label.textContent = 'Update'
+                      submitBtn.classList.remove('btn-success')
+                      submitBtn.classList.add('btn-outline-secondary')
+                  }, 1200)
+              })
+          })
+      }
+
+      bindCartDetailControls()
+      document.body.addEventListener('htmx:afterSwap', bindCartDetailControls)
+
       let myModal = new bootstrap.Modal(document.getElementById('myModal'), {
           keyboard: false
       })

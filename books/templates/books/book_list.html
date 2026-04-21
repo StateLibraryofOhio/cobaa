@@ -25,7 +25,7 @@
                                 <input class="form-check-input" type="checkbox" name="winner" id="id_winner"
                                        value="true">
                             {% endif %}
-                            <label class="form-check-label" for="winner">Winners only</label>
+                            <label class="form-check-label" for="id_winner">Winners only</label>
                         </div>
                     </div>
                 </div>
@@ -50,6 +50,7 @@
             <th class="text-end">Quantity</th>
         </tr>
         </thead>
+        <tbody>
         {% for book in book_list %}
             <tr>
                 <td>
@@ -61,13 +62,28 @@
                 <td>{{ book.authors.all|join:'<br />' }}</td>
                 <td>{{ book.awards.published|join:'<br>' }}</td>
                 <td>
-                    <div class="input-group input-group-sm justify-content-end">
-                        <form class="cart_form" hx-post="{% url "cart:cart_add" book.id %}" hx-target="#toast">
-                            {% for field in cart_form %}
-                                {{ field }}
-                            {% endfor %}
+                    <div class="d-flex justify-content-end">
+                        <form class="cart_form add-to-cart-form" hx-post="{% url "cart:cart_add" book.id %}" hx-target="#toast">
+                            <div class="quantity-stepper">
+                                <label class="visually-hidden" for="id_quantity_{{ book.id }}">
+                                    Quantity for {{ book.title|truncatechars:40 }}
+                                </label>
+                                <button type="button" class="btn btn-sm btn-outline-secondary quantity-btn quantity-decrease" aria-label="Decrease quantity for {{ book.title|truncatechars:40 }}">-</button>
+                                <input type="number"
+                                       class="form-control form-control-sm quantity-input"
+                                       id="id_quantity_{{ book.id }}"
+                                       name="quantity"
+                                       min="1"
+                                       max="99"
+                                       value="1"
+                                       inputmode="numeric">
+                                <button type="button" class="btn btn-sm btn-outline-secondary quantity-btn quantity-increase" aria-label="Increase quantity for {{ book.title|truncatechars:40 }}">+</button>
+                            </div>
+                            <input type="hidden" name="override" value="False">
                             {% csrf_token %}
-                            <input type="submit" class="btn btn-sm btn-info" value="Add +">
+                            <button type="submit" class="btn btn-sm btn-info add-cart-btn" aria-label="Add {{ book.title|truncatechars:40 }} to cart">
+                                <span class="add-cart-label">Add</span>
+                            </button>
                         </form>
                     </div>
                 </td>
@@ -75,8 +91,59 @@
         {% empty %}
             <p>No results found.</p>
         {% endfor %}
+        </tbody>
     </table>
 
     {% include 'paginator.html' %}
 
 {% endblock content %}
+
+{% block head %}
+    <script>
+        function bindBookListCartControls() {
+            document.querySelectorAll('.add-to-cart-form').forEach((form) => {
+                if (form.dataset.bound === 'true') {
+                    return;
+                }
+                form.dataset.bound = 'true';
+
+                const input = form.querySelector('.quantity-input');
+                const decreaseBtn = form.querySelector('.quantity-decrease');
+                const increaseBtn = form.querySelector('.quantity-increase');
+                const submitBtn = form.querySelector('.add-cart-btn');
+                const label = submitBtn.querySelector('.add-cart-label');
+
+                const adjust = (delta) => {
+                    const min = Number(input.min) || 1;
+                    const max = Number(input.max) || 99;
+                    const current = Number(input.value) || min;
+                    const next = Math.min(max, Math.max(min, current + delta));
+                    input.value = next;
+                };
+
+                decreaseBtn.addEventListener('click', () => adjust(-1));
+                increaseBtn.addEventListener('click', () => adjust(1));
+
+                form.addEventListener('htmx:beforeRequest', () => {
+                    submitBtn.disabled = true;
+                    label.textContent = 'Adding...';
+                });
+
+                form.addEventListener('htmx:afterRequest', () => {
+                    submitBtn.disabled = false;
+                    label.textContent = 'Added';
+                    submitBtn.classList.remove('btn-info');
+                    submitBtn.classList.add('btn-success');
+                    window.setTimeout(() => {
+                        label.textContent = 'Add';
+                        submitBtn.classList.remove('btn-success');
+                        submitBtn.classList.add('btn-info');
+                    }, 1200);
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', bindBookListCartControls);
+        document.body.addEventListener('htmx:afterSwap', bindBookListCartControls);
+    </script>
+{% endblock %}
