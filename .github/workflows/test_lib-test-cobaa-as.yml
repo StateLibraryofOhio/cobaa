@@ -17,8 +17,17 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Install Cairo dependencies
-        run: sudo apt-get update && sudo apt-get install -y libcairo2-dev pkg-config
+      - name: Install WeasyPrint system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libcairo2-dev \
+            libpango1.0-dev \
+            libgdk-pixbuf-2.0-0 \
+            libgdk-pixbuf2.0-dev \
+            libffi-dev \
+            shared-mime-info \
+            pkg-config
 
       - name: Set up Python version
         uses: actions/setup-python@v6

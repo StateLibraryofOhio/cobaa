@@ -1,9 +1,6 @@
 @page {
     size: letter portrait;
-    margin-top: 5mm;
-    margin-left: 15mm;
-    margin-right: 15mm;
-    margin-bottom: 10mm;
+    margin: 10mm 15mm 10mm;
 }
 
 html, body {
@@ -16,20 +13,42 @@ body {
     color: #222;
 }
 
+.split-row {
+    width: 100%;
+}
+
+.split-col {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.split-col-left {
+    width: 50%;
+    text-align: left;
+}
+
+.split-col-right {
+    width: 49%;
+    text-align: right;
+}
+
+.split-row-bottom {
+    margin-top: 10px;
+}
+
 table {
     width: 100%;
     border-spacing: 0;
     border-collapse: collapse;
     margin-top: 10px;
     margin-bottom: 10px;
+    line-height: 1.2;
 }
 
 table th, table td {
     text-align: left;
-    font-size: 10px;
-    padding-top: 5px;
-    padding-left: 4px;
-    padding-right: 4px;
+    font-size: 12px;
+    padding: 6px 5px;
     margin: 0;
 }
 
@@ -67,23 +86,26 @@ thead th, tfoot tr.total {
 }
 
 .author {
-    font-size: 8px;
+    font-size: 10px;
 }
 
 .inst_name {
     font-size: 16px;
+    border-bottom: 1px solid #212529;
+    margin-bottom: 10px;
+    padding-bottom: 4px;
 }
 
 .logoslo {
     height: 100px;
     width: 88px;
     margin-top: -20px;
-    margin-left: 5px;
+    margin-left: 15px;
 }
 
 .logoimls {
     width: 150px;
-    margin-top: -20px;
+    margin-top: -10px;
     margin-right: 5px;
 }
 

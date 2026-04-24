@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_weasyprint',
     # 'cloudinary_storage',
     # 'cloudinary',
     'django_bootstrap5',
@@ -120,3 +121,8 @@ SESSION_COOKIE_AGE = 15780000
 
 # Django-Filter Settings
 FILTERS_EMPTY_CHOICE_LABEL = 'All Books'
+
+# PDF Settings
+WEASYPRINT_BASEURL = STATIC_ROOT
+ACCESSPDF_BIN = os.environ.get('ACCESSPDF_BIN', 'accesspdf')
+ACCESSPDF_COMMAND = os.environ.get('ACCESSPDF_COMMAND')

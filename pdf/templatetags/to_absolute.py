@@ -7,8 +7,6 @@ from django.contrib.staticfiles import finders
 register = template.Library()
 
 
-# See: https://github.com/xhtml2pdf/xhtml2pdf/issues/388
-
 @register.filter
 def to_absolute(asset_path):
     normalized_path = str(asset_path).lstrip("/")
@@ -16,5 +14,5 @@ def to_absolute(asset_path):
     if isinstance(located, (list, tuple)):
         located = located[0] if located else None
     if located:
-        return located
-    return str(Path(settings.STATIC_ROOT) / normalized_path)
+        return Path(located).resolve().as_uri()
+    return Path(settings.STATIC_ROOT / normalized_path).resolve().as_uri()

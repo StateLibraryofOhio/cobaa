@@ -8,29 +8,17 @@
   <link href="{{ "/css/pdf.css"|to_absolute }}" rel="stylesheet">
 </head>
 <body>
-<table role="presentation">
-  <colgroup>
-    <col width="50%">
-    <col width="50%">
-  </colgroup>
-  <tr>
-    <td style="text-align:left">
-      <img src="{{ "/img/IMLSLogo.jpg"|to_absolute }}" alt="Institute of Museum and Library Services" class="logoimls">
-    </td>
-    <td style="text-align:right">
-      <img src="{{ "/img/StateLibraryLogo.png"|to_absolute }}" alt="State Library of Ohio" class="logoslo">
-    </td>
-  </tr>
-</table>
+<div class="split-row split-row-top" aria-hidden="true">
+  <div class="split-col split-col-left">
+    <img src="{{ "/img/IMLSLogo.jpg"|to_absolute }}" alt="" aria-hidden="true" class="logoimls">
+  </div>
+  <div class="split-col split-col-right">
+    <img src="{{ "/img/StateLibraryLogo.png"|to_absolute }}" alt="" aria-hidden="true" class="logoslo">
+  </div>
+</div>
 <p class="inst_name"><span style="font-size: 20px">COBAA Request List</span> &mdash; {{ order.inst_name }}</p>
-<hr>
-<table class="table table-hover align-middle pdf-request-table" style="font-size:0.88rem;" width="100%" aria-label="Selected titles, awards, quantities, and totals">
+<table class="table table-hover align-middle pdf-request-table" style="font-size:1rem;" width="100%" aria-label="Selected titles, awards, quantities, and totals">
   <caption class="visually-hidden">Selected titles, awards, quantities, and totals</caption>
-  <colgroup>
-    <col width="40%" style="width:40%">
-    <col width="52%" style="width:52%">
-    <col width="8%" style="width:8%">
-  </colgroup>
   <thead>
   <tr>
     <th class="col-title" scope="col" width="40%" style="width:40%;">Title</th>
@@ -60,19 +48,13 @@
   {% endwith %}
   </tfoot>
 </table>
-<table role="presentation">
-  <colgroup>
-    <col width="50%">
-    <col width="50%">
-  </colgroup>
-  <tr>
-    <td style="text-align:left">
-      <p class="date">{% now "SHORT_DATE_FORMAT" %}</p>
-    </td>
-    <td style="text-align:right">
-      <p class="uuid">Your code: {{ order.id }}</p>
-    </td>
-  </tr>
-</table>
+<div class="split-row split-row-bottom">
+  <div class="split-col split-col-left">
+    <p class="date">{% now "SHORT_DATE_FORMAT" %}</p>
+  </div>
+  <div class="split-col split-col-right">
+    <p class="uuid">Your code: {{ order.id }}</p>
+  </div>
+</div>
 </body>
 </html>
