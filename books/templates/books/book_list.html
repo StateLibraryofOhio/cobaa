@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}  {% load django_bootstrap5 %}
+{% load static %}  {% load django_bootstrap5 %}  {% load tags %}
 
 {% block content %}
     <div class="row">
@@ -69,21 +69,25 @@
                                     Quantity for {{ book.title|truncatechars:40 }}
                                 </label>
                                 <button type="button" class="btn btn-sm btn-outline-secondary quantity-btn quantity-decrease" aria-label="Decrease quantity for {{ book.title|truncatechars:40 }}">-</button>
+                                {% with cart_qty=cart|cart_quantity:book.id %}
                                 <input type="number"
                                        class="form-control form-control-sm quantity-input"
                                        id="id_quantity_{{ book.id }}"
                                        name="quantity"
                                        min="1"
                                        max="99"
-                                       value="1"
+                                       {% if cart_qty %}value="{{ cart_qty }}"{% endif %}
                                        inputmode="numeric">
+                                {% endwith %}
                                 <button type="button" class="btn btn-sm btn-outline-secondary quantity-btn quantity-increase" aria-label="Increase quantity for {{ book.title|truncatechars:40 }}">+</button>
                             </div>
-                            <input type="hidden" name="override" value="False">
+                            {% with cart_qty=cart|cart_quantity:book.id %}
+                            <input type="hidden" name="override" value="{% if cart_qty %}True{% else %}False{% endif %}">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-sm btn-info add-cart-btn" aria-label="Add {{ book.title|truncatechars:40 }} to cart">
-                                <span class="add-cart-label">Add</span>
+                            <button type="submit" class="btn btn-sm btn-info add-cart-btn" {% if not cart_qty %}disabled{% endif %} aria-label="{% if cart_qty %}Update{% else %}Add{% endif %} {{ book.title|truncatechars:40 }} in cart" data-in-cart="{% if cart_qty %}true{% else %}false{% endif %}">
+                                <span class="add-cart-label">{% if cart_qty %}Update{% else %}Add{% endif %}</span>
                             </button>
+                            {% endwith %}
                         </form>
                     </div>
                 </td>
@@ -113,29 +117,40 @@
                 const submitBtn = form.querySelector('.add-cart-btn');
                 const label = submitBtn.querySelector('.add-cart-label');
 
+                const updateSubmitState = () => {
+                    const val = Number(input.value);
+                    submitBtn.disabled = !(val >= 1);
+                };
+
                 const adjust = (delta) => {
                     const min = Number(input.min) || 1;
                     const max = Number(input.max) || 99;
-                    const current = Number(input.value) || min;
+                    const current = input.value !== '' ? Number(input.value) : (delta > 0 ? min - 1 : min);
                     const next = Math.min(max, Math.max(min, current + delta));
                     input.value = next;
+                    updateSubmitState();
                 };
 
                 decreaseBtn.addEventListener('click', () => adjust(-1));
                 increaseBtn.addEventListener('click', () => adjust(1));
+                input.addEventListener('input', updateSubmitState);
 
                 form.addEventListener('htmx:beforeRequest', () => {
+                    const isUpdate = submitBtn.dataset.inCart === 'true';
                     submitBtn.disabled = true;
-                    label.textContent = 'Adding...';
+                    label.textContent = isUpdate ? 'Updating...' : 'Adding...';
                 });
 
                 form.addEventListener('htmx:afterRequest', () => {
+                    submitBtn.dataset.inCart = 'true';
                     submitBtn.disabled = false;
-                    label.textContent = 'Added';
+                    label.textContent = 'Updated';
                     submitBtn.classList.remove('btn-info');
                     submitBtn.classList.add('btn-success');
+                    const overrideInput = form.querySelector('input[name="override"]');
+                    if (overrideInput) overrideInput.value = 'True';
                     window.setTimeout(() => {
-                        label.textContent = 'Add';
+                        label.textContent = 'Update';
                         submitBtn.classList.remove('btn-success');
                         submitBtn.classList.add('btn-info');
                     }, 1200);

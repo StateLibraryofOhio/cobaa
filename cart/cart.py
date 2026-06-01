@@ -71,6 +71,12 @@ class Cart(object):
         # mark the session as "modified" to make sure it gets saved
         self.session.modified = True
 
+    def get_quantity(self, book_id):
+        """
+        Return the current quantity for a book in the cart, or 0 if not present.
+        """
+        return self.cart.get(str(book_id), {}).get('quantity', 0)
+
     def __iter__(self):
         """
         Iterate over items in cart and get the books from the database.

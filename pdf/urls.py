@@ -5,5 +5,5 @@ from . import views
 app_name = 'pdf'
 
 urlpatterns = [
-    path('export/', views.books_to_pdf, name='books_to_pdf'),
+    path('export/', views.books_to_excel, name='books_to_excel'),
     ]

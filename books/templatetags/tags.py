@@ -1,5 +1,12 @@
 from django import template
+
 register = template.Library()
+
+
+@register.filter
+def cart_quantity(cart, book_id):
+    """Return the current cart quantity for a given book_id, or 0 if not in cart."""
+    return cart.get_quantity(book_id)
 
 
 @register.simple_tag(takes_context=True)
