@@ -5,6 +5,6 @@
     <input type="submit" value="Clear My List" class="btn btn-sm btn-warning float-end" onclick="return confirm(this.innerText+'Clear out selection list?');">
     {% csrf_token %}
   </form>
-  <a href="{% url "cart:cart_export" %}" class="btn btn-sm btn-light">Export as CSV</a>
+{#  <a href="{% url "cart:cart_export" %}" class="btn btn-sm btn-light">Export as CSV</a>#}
   <a href="#" class="btn btn-sm btn-primary" onclick="myModal.show()">Generate My List</a>
 </div>
