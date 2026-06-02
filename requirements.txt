@@ -2,8 +2,8 @@ asgiref==3.11.1
 certifi==2026.5.20
 charset-normalizer==3.4.7
 cloudinary==1.44.2
-Django==6.0.4
-django-bootstrap5==26.1
+Django==6.0.5
+django-bootstrap5==26.2
 django-cloudinary-storage==0.3.0
 django-filter==25.2
 et_xmlfile==2.0.0
