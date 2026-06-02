@@ -47,7 +47,7 @@
             <th>Title</th>
             <th>Authors / Illustrators</th>
             <th>Awards</th>
-            <th class="text-end">Quantity</th>
+            <th class="text-center">Quantity</th>
         </tr>
         </thead>
         <tbody>
@@ -63,7 +63,7 @@
                 <td>{{ book.awards.published|join:'<br>' }}</td>
                 <td>
                     <div class="d-flex justify-content-end">
-                        <form class="cart_form add-to-cart-form" hx-post="{% url "cart:cart_add" book.id %}" hx-target="#toast">
+                        <form class="cart_form add-to-cart-form" hx-post="{% url "cart:cart_add" book.id %}" hx-target="#toast" data-remove-url="{% url "cart:cart_remove" book.id %}">
                             <div class="quantity-stepper">
                                 <label class="visually-hidden" for="id_quantity_{{ book.id }}">
                                     Quantity for {{ book.title|truncatechars:40 }}
@@ -84,9 +84,20 @@
                             {% with cart_qty=cart|cart_quantity:book.id %}
                             <input type="hidden" name="override" value="{% if cart_qty %}True{% else %}False{% endif %}">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-sm btn-info add-cart-btn" {% if not cart_qty %}disabled{% endif %} aria-label="{% if cart_qty %}Update{% else %}Add{% endif %} {{ book.title|truncatechars:40 }} in cart" data-in-cart="{% if cart_qty %}true{% else %}false{% endif %}">
+                            <button type="submit" class="btn btn-sm {% if cart_qty %}btn-outline-secondary{% else %}btn-info{% endif %} add-cart-btn" {% if not cart_qty %}disabled{% endif %} aria-label="{% if cart_qty %}Update{% else %}Add{% endif %} {{ book.title|truncatechars:40 }} in cart" data-in-cart="{% if cart_qty %}true{% else %}false{% endif %}">
                                 <span class="add-cart-label">{% if cart_qty %}Update{% else %}Add{% endif %}</span>
                             </button>
+                            {% if cart_qty %}
+                            <button class="btn btn-sm btn-danger"
+                                    hx-post="{% url "cart:cart_remove" book.id %}"
+                                    hx-confirm="Remove this title?"
+                                    hx-target="closest tr"
+                                    hx-swap="outerHTML swap:0.4s">
+                                <i class="lni lni-trash-can"></i><span class="visually-hidden">&nbsp;Remove</span>
+                            </button>
+                            {% else %}
+                            <span class="btn btn-sm invisible" aria-hidden="true"><i class="lni lni-trash-can"></i></span>
+                            {% endif %}
                             {% endwith %}
                         </form>
                     </div>
@@ -146,13 +157,27 @@
                     submitBtn.disabled = false;
                     label.textContent = 'Updated';
                     submitBtn.classList.remove('btn-info');
+                    submitBtn.classList.remove('btn-outline-secondary');
                     submitBtn.classList.add('btn-success');
                     const overrideInput = form.querySelector('input[name="override"]');
                     if (overrideInput) overrideInput.value = 'True';
+                    // Show the delete button if it's currently an invisible placeholder
+                    const placeholder = form.querySelector('.btn.invisible');
+                    if (placeholder) {
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.className = 'btn btn-sm btn-danger';
+                        deleteBtn.setAttribute('hx-post', form.dataset.removeUrl);
+                        deleteBtn.setAttribute('hx-confirm', 'Remove this title?');
+                        deleteBtn.setAttribute('hx-target', 'closest tr');
+                        deleteBtn.setAttribute('hx-swap', 'outerHTML swap:0.4s');
+                        deleteBtn.innerHTML = '<i class="lni lni-trash-can"></i><span class="visually-hidden">&nbsp;Remove</span>';
+                        placeholder.replaceWith(deleteBtn);
+                        htmx.process(deleteBtn);
+                    }
                     window.setTimeout(() => {
                         label.textContent = 'Update';
                         submitBtn.classList.remove('btn-success');
-                        submitBtn.classList.add('btn-info');
+                        submitBtn.classList.add('btn-outline-secondary');
                     }, 1200);
                 });
             });

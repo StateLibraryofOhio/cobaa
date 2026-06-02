@@ -17,7 +17,7 @@
     <tr>
       <th>Title</th>
       <th>Author / Illustrators</th>
-      <th>Quantity</th>
+      <th class="text-center">Quantity</th>
     </tr>
     </thead>
     <tbody>
@@ -110,16 +110,23 @@
               const submitBtn = form.querySelector('.cart-update-btn')
               const label = submitBtn.querySelector('.cart-update-label')
 
+              const updateSubmitState = () => {
+                  const val = Number(input.value)
+                  submitBtn.disabled = !(val >= 1)
+              }
+
               const adjust = (delta) => {
                   const min = Number(input.min) || 1
                   const max = Number(input.max) || 99
-                  const current = Number(input.value) || min
+                  const current = input.value !== '' ? Number(input.value) : (delta > 0 ? min - 1 : min)
                   const next = Math.min(max, Math.max(min, current + delta))
                   input.value = next
+                  updateSubmitState()
               }
 
               decreaseBtn.addEventListener('click', () => adjust(-1))
               increaseBtn.addEventListener('click', () => adjust(1))
+              input.addEventListener('input', updateSubmitState)
 
               form.addEventListener('htmx:beforeRequest', (event) => {
                   if (event.detail.elt !== form) {
