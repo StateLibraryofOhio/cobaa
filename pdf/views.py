@@ -15,7 +15,7 @@ def books_to_excel(request):
     order = order_create(request)
     if not order:
         messages.add_message(request, messages.ERROR, message='Oops... Something went wrong.')
-        return
+        return HttpResponse('Oops... Something went wrong.', status=400)
 
     wb = Workbook()
     ws = wb.active
