@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}  {% load django_bootstrap5 %}
+{% load static %}  {% load django_bootstrap5 %}  {% load tags %}
 
 {% block content %}
     <div class="row">
@@ -16,7 +16,7 @@
 
                 <div class="row">
                     <div class="col">
-                        {% bootstrap_field books.form.keywords value="" placeholder="Ex: Berenstain" bound_css_class=""%}
+                        {% bootstrap_field books.form.keywords value="" placeholder="Ex: Berenstain" bound_css_class="" %}
                         <div class="form-check form-switch">
                             {% if request.GET.winner == 'true' %}
                                 <input class="form-check-input" type="checkbox" name="winner" id="id_winner"
@@ -25,15 +25,15 @@
                                 <input class="form-check-input" type="checkbox" name="winner" id="id_winner"
                                        value="true">
                             {% endif %}
-                            <label class="form-check-label" for="winner">Winners only</label>
+                            <label class="form-check-label" for="id_winner">Winners only</label>
                         </div>
                     </div>
                 </div>
 
                 <div class="row mt-1">
                     <div class="mb-3">
-                        {% bootstrap_button content='Search' button_type="submit" size="md"%}
-                </div>
+                        {% bootstrap_button content='Search' button_type="submit" size="md" %}
+                    </div>
                 </div>
             </form>
         </div>
@@ -47,9 +47,10 @@
             <th>Title</th>
             <th>Authors / Illustrators</th>
             <th>Awards</th>
-            <th class="text-end">Quantity</th>
+            <th class="text-center">Quantity</th>
         </tr>
         </thead>
+        <tbody>
         {% for book in book_list %}
             <tr>
                 <td>
@@ -61,13 +62,60 @@
                 <td>{{ book.authors.all|join:'<br />' }}</td>
                 <td>{{ book.awards.published|join:'<br>' }}</td>
                 <td>
-                    <div class="input-group input-group-sm justify-content-end">
-                        <form class="cart_form" hx-post="{% url "cart:cart_add" book.id %}" hx-target="#toast">
-                            {% for field in cart_form %}
-                                {{ field }}
-                            {% endfor %}
-                            {% csrf_token %}
-                            <input type="submit" class="btn btn-sm btn-info" value="Add +">
+                    <div class="d-flex justify-content-end">
+                        <form class="cart_form add-to-cart-form"
+                              hx-post="{% with cart_qty=cart|cart_quantity:book.id %}{% if cart_qty %}{% url "cart:cart_update" book.id %}{% else %}{% url "cart:cart_add" book.id %}{% endif %}{% endwith %}"
+                              hx-target="#toast"
+                              data-add-url="{% url "cart:cart_add" book.id %}"
+                              data-update-url="{% url "cart:cart_update" book.id %}"
+                              data-remove-url="{% url "cart:cart_remove" book.id %}">
+                            <div class="quantity-stepper">
+                                <label class="visually-hidden" for="id_quantity_{{ book.id }}">
+                                    Quantity for {{ book.title|truncatechars:40 }}
+                                </label>
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-secondary quantity-btn quantity-decrease"
+                                        aria-label="Decrease quantity for {{ book.title|truncatechars:40 }}">-
+                                </button>
+                                {% with cart_qty=cart|cart_quantity:book.id %}
+                                    <input type="number"
+                                           class="form-control form-control-sm quantity-input"
+                                           id="id_quantity_{{ book.id }}"
+                                           name="quantity"
+                                           min="1"
+                                           max="99"
+                                           {% if cart_qty %}value="{{ cart_qty }}"{% endif %}
+                                           inputmode="numeric">
+                                {% endwith %}
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-secondary quantity-btn quantity-increase"
+                                        aria-label="Increase quantity for {{ book.title|truncatechars:40 }}">+
+                                </button>
+                            </div>
+                            {% with cart_qty=cart|cart_quantity:book.id %}
+                                <input type="hidden" name="override"
+                                       value="{% if cart_qty %}True{% else %}False{% endif %}">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        class="btn btn-sm {% if cart_qty %}btn-outline-secondary{% else %}btn-info{% endif %} add-cart-btn"
+                                        {% if not cart_qty %}disabled{% endif %}
+                                        aria-label="{% if cart_qty %}Update{% else %}Add{% endif %} {{ book.title|truncatechars:40 }} in cart"
+                                        data-in-cart="{% if cart_qty %}true{% else %}false{% endif %}">
+                                    <span class="add-cart-label">{% if cart_qty %}Update{% else %}Add{% endif %}</span>
+                                </button>
+                                {% if cart_qty %}
+                                    <button type="button" class="btn btn-sm btn-danger delete-btn"
+                                            data-remove-url="{% url "cart:cart_remove" book.id %}"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#confirmRemoveModal">
+                                        <i class="lni lni-trash-can"></i><span
+                                            class="visually-hidden">&nbsp;Remove</span>
+                                    </button>
+                                {% else %}
+                                    <span class="btn btn-sm invisible" aria-hidden="true"><i
+                                            class="lni lni-trash-can"></i></span>
+                                {% endif %}
+                            {% endwith %}
                         </form>
                     </div>
                 </td>
@@ -75,8 +123,177 @@
         {% empty %}
             <p>No results found.</p>
         {% endfor %}
+        </tbody>
     </table>
 
     {% include 'paginator.html' %}
 
+    <div id="confirmRemoveModal" class="modal fade" tabindex="-1" aria-labelledby="confirmRemoveModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmRemoveModalLabel">Remove title?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-0">This will remove the title from your list.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger btn-sm" id="confirmRemoveBtn">Remove</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock content %}
+
+{% block head %}
+    <script>
+        function bindBookListCartControls() {
+            document.querySelectorAll('.add-to-cart-form').forEach((form) => {
+                if (form.dataset.bound === 'true') {
+                    return;
+                }
+                form.dataset.bound = 'true';
+
+                const input = form.querySelector('.quantity-input');
+                const decreaseBtn = form.querySelector('.quantity-decrease');
+                const increaseBtn = form.querySelector('.quantity-increase');
+                const submitBtn = form.querySelector('.add-cart-btn');
+                const label = submitBtn.querySelector('.add-cart-label');
+
+                const updateSubmitState = () => {
+                    const val = Number(input.value);
+                    submitBtn.disabled = !(val >= 1);
+                };
+
+                const adjust = (delta) => {
+                    const min = Number(input.min) || 1;
+                    const max = Number(input.max) || 99;
+                    const current = input.value !== '' ? Number(input.value) : (delta > 0 ? min - 1 : min);
+                    const next = Math.min(max, Math.max(min, current + delta));
+                    input.value = next;
+                    updateSubmitState();
+                };
+
+                decreaseBtn.addEventListener('click', () => adjust(-1));
+                increaseBtn.addEventListener('click', () => adjust(1));
+                input.addEventListener('input', updateSubmitState);
+
+                form.addEventListener('htmx:beforeRequest', () => {
+                    const isUpdate = submitBtn.dataset.inCart === 'true';
+                    submitBtn.disabled = true;
+                    label.textContent = isUpdate ? 'Updating...' : 'Adding...';
+                });
+
+                form.addEventListener('htmx:afterRequest', () => {
+                    submitBtn.dataset.inCart = 'true';
+                    submitBtn.disabled = false;
+                    label.textContent = 'Updated';
+                    submitBtn.classList.remove('btn-info');
+                    submitBtn.classList.remove('btn-outline-secondary');
+                    submitBtn.classList.add('btn-success');
+                    const overrideInput = form.querySelector('input[name="override"]');
+                    if (overrideInput) overrideInput.value = 'True';
+                    // Switch hx-post to the update URL for subsequent submissions
+                    if (form.dataset.updateUrl) form.setAttribute('hx-post', form.dataset.updateUrl);
+                    // Show the delete button if it's currently an invisible placeholder
+                    const placeholder = form.querySelector('.btn.invisible');
+                    if (placeholder) {
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.type = 'button';
+                        deleteBtn.className = 'btn btn-sm btn-danger delete-btn';
+                        deleteBtn.setAttribute('data-remove-url', form.dataset.removeUrl);
+                        deleteBtn.setAttribute('data-bs-toggle', 'modal');
+                        deleteBtn.setAttribute('data-bs-target', '#confirmRemoveModal');
+                        deleteBtn.innerHTML = '<i class="lni lni-trash-can"></i><span class="visually-hidden">&nbsp;Remove</span>';
+                        placeholder.replaceWith(deleteBtn);
+                    }
+                    window.setTimeout(() => {
+                        label.textContent = 'Update';
+                        submitBtn.classList.remove('btn-success');
+                        submitBtn.classList.add('btn-outline-secondary');
+                    }, 1200);
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            bindBookListCartControls();
+            document.body.addEventListener('htmx:afterSwap', bindBookListCartControls);
+        });
+
+        // Confirm-remove modal wiring — mirrors cart detail page exactly
+        document.addEventListener('DOMContentLoaded', () => {
+            const confirmRemoveModal = document.getElementById('confirmRemoveModal');
+            if (!confirmRemoveModal) return;
+            let pendingRemoveUrl = null;
+            let pendingRemoveRow = null;
+
+            // Capture URL/row from server-rendered buttons via relatedTarget (same as cart detail)
+            confirmRemoveModal.addEventListener('show.bs.modal', (event) => {
+                const btn = event.relatedTarget;
+                if (btn) {
+                    pendingRemoveUrl = btn.dataset.removeUrl;
+                    pendingRemoveRow = btn.closest('tr');
+                }
+            });
+
+            // Also capture via click delegation for dynamically-created delete buttons
+            document.addEventListener('click', (event) => {
+                const btn = event.target.closest('.delete-btn[data-bs-target="#confirmRemoveModal"]');
+                if (!btn) return;
+                pendingRemoveUrl = btn.dataset.removeUrl;
+                pendingRemoveRow = btn.closest('tr');
+            });
+
+            document.getElementById('confirmRemoveBtn').addEventListener('click', () => {
+                if (!pendingRemoveUrl) return;
+                const modal = bootstrap.Modal.getOrCreateInstance(confirmRemoveModal);
+                modal.hide();
+                fetch(pendingRemoveUrl, {
+                    method: 'POST',
+                    headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value}
+                }).then(() => {
+                    if (!pendingRemoveRow) return;
+                    const form = pendingRemoveRow.querySelector('.add-to-cart-form');
+                    if (!form) return;
+                    // Reset quantity input
+                    const input = form.querySelector('.quantity-input');
+                    if (input) input.value = '';
+                    // Disable the submit button and reset its label/style to "Add"
+                    const submitBtn = form.querySelector('.add-cart-btn');
+                    const label = submitBtn ? submitBtn.querySelector('.add-cart-label') : null;
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.dataset.inCart = 'false';
+                        submitBtn.classList.remove('btn-outline-secondary', 'btn-success');
+                        submitBtn.classList.add('btn-info');
+                    }
+                    if (label) label.textContent = 'Add';
+                    // Reset override hidden input
+                    const overrideInput = form.querySelector('input[name="override"]');
+                    if (overrideInput) overrideInput.value = 'False';
+                    // Switch hx-post back to the add URL
+                    if (form.dataset.addUrl) form.setAttribute('hx-post', form.dataset.addUrl);
+                    // Replace delete button with invisible placeholder
+                    const deleteBtn = form.querySelector('.delete-btn');
+                    if (deleteBtn) {
+                        const placeholder = document.createElement('span');
+                        placeholder.className = 'btn btn-sm invisible';
+                        placeholder.setAttribute('aria-hidden', 'true');
+                        placeholder.innerHTML = '<i class="lni lni-trash-can"></i>';
+                        deleteBtn.replaceWith(placeholder);
+                    }
+                    // Reset the form's bound state so controls re-bind if needed
+                    form.dataset.bound = 'false';
+                    bindBookListCartControls();
+                    // Update the navbar cart total
+                    htmx.trigger(document.body, 'updateTotal');
+                });
+            });
+        });
+    </script>
+{% endblock %}

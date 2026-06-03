@@ -1,5 +1,5 @@
 from django.contrib import admin
-
+from django.utils import timezone
 from .models import *
 
 
@@ -11,6 +11,11 @@ class AuthorAdmin(admin.ModelAdmin):
 
 @admin.register(Award)
 class AwardAdmin(admin.ModelAdmin):
+
+    def get_changeform_initial_data(self, request):
+        return {
+            "year": timezone.now().year,
+        }
 
     def title(self, obj):
         return obj.get_short_book_title
@@ -33,4 +38,3 @@ class BookAdmin(admin.ModelAdmin):
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     search_fields = ['tag']
-
