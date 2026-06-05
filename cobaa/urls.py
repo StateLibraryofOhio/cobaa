@@ -9,7 +9,7 @@ urlpatterns = [
     path("about/", TemplateView.as_view(template_name="about.html"), name="about"),
     path('admin/', admin.site.urls),
     path('cart/', include('cart.urls', namespace='cart')),
-    path('pdf/', include('pdf.urls', namespace='pdf')),
+    path('export/', include('export.urls', namespace='export')),
     path('', include('books.urls', namespace='books')),
 ]
 

@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     'django_filters',
     'cart.apps.CartConfig',
     'books.apps.BooksConfig',
-    'pdf.apps.PdfConfig',
+    'export.apps.ExportConfig',
     'orders.apps.OrdersConfig',
 ]
 

@@ -109,7 +109,7 @@
         </div>
         <div class="modal-body">
           <p>Please enter the following information to generate your Excel list.</p>
-          <form id="orderForm" class="form-group" action="{% url "pdf:books_to_excel" %}" method="post">
+          <form id="orderForm" class="form-group" action="{% url "export:books_to_excel" %}" method="post">
             <div class="mb-3">
               <label for="id_inst_name" class="form-label">Institution Name</label>
               {{ order.inst_name }}

@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class PdfConfig(AppConfig):
+class ExportConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'pdf'
+    name = 'export'
