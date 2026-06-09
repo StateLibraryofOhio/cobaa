@@ -27,7 +27,7 @@ For more information about the grant, [visit this page](https://library.ohio.gov
 # Tools Used
 
 * Django
-* PostgreSQL
+* SQLite
 * Bootstrap 5
 
 # Usage
