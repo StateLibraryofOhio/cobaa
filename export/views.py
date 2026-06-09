@@ -24,7 +24,7 @@ def books_to_excel(request):
     # Header row
     headers = ['Title', 'Authors / Illustrators', 'Quantity']
     header_font = Font(bold=True, color='FFFFFF')
-    header_fill = PatternFill(fill_type='solid', fgColor='2563EB')
+    header_fill = PatternFill(fill_type='solid', fgColor='2C4D76')
     for col_num, header in enumerate(headers, 1):
         cell = ws.cell(row=1, column=col_num, value=header)
         cell.font = header_font
