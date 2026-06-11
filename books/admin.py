@@ -13,20 +13,39 @@ class AuthorAdmin(admin.ModelAdmin):
 class AwardAdmin(admin.ModelAdmin):
 
     def get_changeform_initial_data(self, request):
-        return {
-            "year": timezone.now().year,
-        }
+        initial = {}
 
-    def title(self, obj):
-        return obj.get_short_book_title
+        # Prefer explicit GET params (useful if you redirect with query params)
+        award = request.GET.get('award')
+        year = request.GET.get('year')
 
-    def authors(self, obj):
-        return obj.get_authors
+        if award:
+            initial['award'] = award
+        else:
+            # fallback to last saved value in session
+            last_award = request.session.get('last_award')
+            if last_award:
+                initial['award'] = last_award
 
-    list_display = ['__str__', 'title', 'authors']
-    list_filter = ['award', 'year', 'prize']
-    search_fields = ['award', 'book__title', 'year', 'prize']
-    ordering = ['award', '-year', 'book__title']
+        if year:
+            initial['year'] = year
+        else:
+            last_year = request.session.get('last_award_year')
+            if last_year:
+                initial['year'] = last_year
+            else:
+                initial['year'] = timezone.now().year
+
+        return initial
+
+    def response_add(self, request, obj, post_url_continue=None):
+        # Save the chosen award/year in the user's session for next time.
+        # obj.award is the stored choice value (e.g. 'c', 't', etc.)
+        request.session['last_award'] = obj.award
+        request.session['last_award_year'] = str(obj.year)
+        request.session.modified = True
+
+        return super().response_add(request, obj, post_url_continue=post_url_continue)
 
 
 @admin.register(Book)
