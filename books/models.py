@@ -38,7 +38,7 @@ class Book(models.Model):
     hidden = models.BooleanField(default=False, verbose_name='Hidden from search results')
 
     def get_absolute_url(self):
-        return reverse('books:book_list', args=[self.id])
+        return reverse('books:book_list')
 
     objects = models.Manager()
     published = BookManager()

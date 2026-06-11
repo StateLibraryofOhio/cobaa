@@ -1,16 +1,25 @@
 import os
 from pathlib import Path
+from django.core.exceptions import ImproperlyConfigured
 
 ADMINS = [('David W. Green', 'dgreen@library.ohio.gov',)]
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
+def get_env(var_name):
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        raise ImproperlyConfigured(f"Set the {var_name} environment variable")
+
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = get_env('SECRET_KEY')
 
 # Application definition
 

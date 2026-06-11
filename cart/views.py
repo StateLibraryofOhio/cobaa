@@ -24,7 +24,8 @@ def is_same_host(url, request):
     current_host = request.get_host()
 
     # Compare the hosts
-    return redirect_host == current_host
+    # If redirect_host is empty, it's a relative path, which is safe
+    return not redirect_host or redirect_host == current_host
 
 
 @require_POST
