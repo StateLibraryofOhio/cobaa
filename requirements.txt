@@ -1,11 +1,11 @@
-asgiref==3.11.1
-certifi==2026.6.17
-charset-normalizer==3.4.7
+asgiref==3.12.1
+certifi==2026.7.22
+charset-normalizer==3.4.9
 cloudinary==1.45.0
-Django==6.0.6
+Django==6.0.7
 django-bootstrap5==26.2
 django-cloudinary-storage==0.3.0
-django-filter==25.2
+django-filter==26.1
 et_xmlfile==2.0.0
 idna==3.18
 openpyxl==3.1.5
