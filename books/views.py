@@ -2,19 +2,7 @@ from django.views.generic.list import ListView
 
 from cart.forms import CartAddBookForm
 from .filters import BookFilter
-from .models import Award, Book
-
-
-class AwardListView(ListView):
-    model = Award
-    template_name = 'awards/award_list.html'
-
-    paginate_by = 20
-
-    def get_queryset(self):
-        queryset = Award.objects.all().filter(hidden=0).order_by('award', '-year', 'book__title')
-
-        return queryset
+from .models import Book
 
 
 class BookListView(ListView):
